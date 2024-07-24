@@ -30,11 +30,11 @@ const fromSupabase = async (query) => {
 
 ### image_annotation
 
-| name       | type   | format | required |
-|------------|--------|--------|----------|
-| id         | int8   | number | true     |
-| image_url  | text   | string | true     |
-| annotation | text   | string | true     |
+| name       | type        | format | required |
+|------------|-------------|--------|----------|
+| id         | int8        | number | true     |
+| image_name | text        | string | true     |
+| annotation | text        | string | true     |
 | created_at | timestamptz | string | true     |
 
 */

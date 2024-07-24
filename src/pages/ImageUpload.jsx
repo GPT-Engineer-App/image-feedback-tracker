@@ -38,10 +38,10 @@ const ImageUpload = () => {
     try {
       const currentFile = selectedFiles[currentImageIndex];
       // In a real application, you would upload the image to a storage service
-      // and get a URL. For this example, we'll use a placeholder URL.
-      const imageUrl = 'https://example.com/placeholder-image.jpg';
+      // and get a URL. For this example, we'll use the file name.
+      const imageName = currentFile.name;
 
-      await addAnnotation.mutateAsync({ image_url: imageUrl, annotation });
+      await addAnnotation.mutateAsync({ image_name: imageName, annotation });
       toast.success("Image annotated successfully");
       
       // Move to the next image or finish if all images are annotated
