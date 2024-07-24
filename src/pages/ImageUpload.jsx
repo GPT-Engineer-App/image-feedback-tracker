@@ -41,7 +41,7 @@ const ImageUpload = () => {
       // and get a URL. For this example, we'll use a placeholder URL.
       const imageUrl = 'https://example.com/placeholder-image.jpg';
 
-      await addAnnotation.mutateAsync({ imageUrl, annotation });
+      await addAnnotation.mutateAsync({ image_url: imageUrl, annotation });
       toast.success("Image annotated successfully");
       
       // Move to the next image or finish if all images are annotated
