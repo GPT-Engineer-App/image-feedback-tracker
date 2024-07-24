@@ -28,6 +28,15 @@ const fromSupabase = async (query) => {
 | created_at | timestamptz | string | true     |
 | date       | date        | string | true     |
 
+### image_annotation
+
+| name       | type   | format | required |
+|------------|--------|--------|----------|
+| id         | int8   | number | true     |
+| image_url  | text   | string | true     |
+| annotation | text   | string | true     |
+| created_at | timestamptz | string | true     |
+
 */
 
 export const useEvents = () => useQuery({
@@ -69,3 +78,18 @@ export const useDeleteEvent = () => {
         },
     });
 };
+
+export const useAddAnnotation = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (newAnnotation) => fromSupabase(supabase.from('image_annotation').insert([newAnnotation])),
+        onSuccess: () => {
+            queryClient.invalidateQueries('annotations');
+        },
+    });
+};
+
+export const useAnnotations = () => useQuery({
+    queryKey: ['annotations'],
+    queryFn: () => fromSupabase(supabase.from('image_annotation').select('*')),
+});
