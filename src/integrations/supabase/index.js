@@ -19,77 +19,54 @@ const fromSupabase = async (query) => {
 
 /* supabase integration types
 
-### event
+### annotations
 
 | name       | type        | format | required |
 |------------|-------------|--------|----------|
 | id         | int8        | number | true     |
-| name       | text        | string | true     |
 | created_at | timestamptz | string | true     |
-| date       | date        | string | true     |
-
-### image_annotation
-
-| name       | type        | format | required |
-|------------|-------------|--------|----------|
-| id         | int8        | number | true     |
-| image_name | text        | string | true     |
-| annotation | text        | string | true     |
-| created_at | timestamptz | string | true     |
+| quality    | text        | string | false    |
+| image_name | text        | string | false    |
 
 */
 
-export const useEvents = () => useQuery({
-    queryKey: ['events'],
-    queryFn: () => fromSupabase(supabase.from('event').select('*')),
+// Hooks for annotations table
+export const useAnnotations = () => useQuery({
+    queryKey: ['annotations'],
+    queryFn: () => fromSupabase(supabase.from('annotations').select('*'))
 });
 
-export const useEvent = (id) => useQuery({
-    queryKey: ['events', id],
-    queryFn: () => fromSupabase(supabase.from('event').select('*').eq('id', id).single()),
+export const useAnnotation = (id) => useQuery({
+    queryKey: ['annotations', id],
+    queryFn: () => fromSupabase(supabase.from('annotations').select('*').eq('id', id).single())
 });
-
-export const useAddEvent = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (newEvent) => fromSupabase(supabase.from('event').insert([newEvent])),
-        onSuccess: () => {
-            queryClient.invalidateQueries('events');
-        },
-    });
-};
-
-export const useUpdateEvent = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: ({ id, ...updateData }) => fromSupabase(supabase.from('event').update(updateData).eq('id', id)),
-        onSuccess: () => {
-            queryClient.invalidateQueries('events');
-        },
-    });
-};
-
-export const useDeleteEvent = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (id) => fromSupabase(supabase.from('event').delete().eq('id', id)),
-        onSuccess: () => {
-            queryClient.invalidateQueries('events');
-        },
-    });
-};
 
 export const useAddAnnotation = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (newAnnotation) => fromSupabase(supabase.from('image_annotation').insert([newAnnotation])),
+        mutationFn: (newAnnotation) => fromSupabase(supabase.from('annotations').insert([newAnnotation])),
         onSuccess: () => {
             queryClient.invalidateQueries('annotations');
         },
     });
 };
 
-export const useAnnotations = () => useQuery({
-    queryKey: ['annotations'],
-    queryFn: () => fromSupabase(supabase.from('image_annotation').select('*')),
-});
+export const useUpdateAnnotation = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: ({ id, ...updateData }) => fromSupabase(supabase.from('annotations').update(updateData).eq('id', id)),
+        onSuccess: () => {
+            queryClient.invalidateQueries('annotations');
+        },
+    });
+};
+
+export const useDeleteAnnotation = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (id) => fromSupabase(supabase.from('annotations').delete().eq('id', id)),
+        onSuccess: () => {
+            queryClient.invalidateQueries('annotations');
+        },
+    });
+};
